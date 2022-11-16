@@ -1,9 +1,10 @@
 import type { NextApiRequest,NextApiResponse } from "next";
 import { conectarMongoDb } from "../../middlewares/conectaMongoDB";
+import type { respostaPadraoMsg } from "../../types/respostaPadraoMsg";
 
 const endpointLogin = (
     req : NextApiRequest,
-    res : NextApiResponse 
+    res : NextApiResponse<respostaPadraoMsg>
 ) => {
     if(req.method === 'POST'){
         const{login,senha} = req.body;
