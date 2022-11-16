@@ -1,7 +1,7 @@
 import { NextApiRequest,NextApiResponse,NextApiHandler } from "next";
 import type {respostaPadraoMsg} from "../types/respostaPadraoMsg";
 
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 export const conectarMongoDb = (handler : NextApiHandler) => 
     async (req : NextApiRequest, res : NextApiResponse<respostaPadraoMsg>) => {
