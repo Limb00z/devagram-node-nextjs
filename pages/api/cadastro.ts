@@ -17,11 +17,11 @@ const endpointCadastro = async (req : NextApiRequest, res : NextApiResponse<resp
         if(!usuario.senha || usuario.senha.length < 8 ) {
             return res.status(400).json({erro: 'Senha invalida'});  //Validação de senha (fraca) {será usado regex}
         }
-        return res.status(200).json({msg : 'Dados Corretos'}); //Se tudo correr bem ns validações.
+         //Se tudo correr bem nas validações.
+         //salvar no banco de dados
+         await UsuarioModel.create(usuario);
+         return res.status(200).json({msg : 'Usuario criado com sucesso '})
     }
-    //salvar no banco de dados
-    await UsuarioModel.create(usuario);
-    return res.status(200).json({msg : 'Usuario criado com sucesso '})
 
     // se  requisição não for pelo metodo  POST, apresentará o erro abaixo
     return res.status(405).json({erro: 'Metodo informado nao e valido'});
