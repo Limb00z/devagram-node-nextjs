@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { respostaPadraoMsg } from "../../types/respostaPadraoMsg";
 import type { CadastroRequisicao } from "../../types/CadastroRequisicao";
+import {UsuarioModel} from  '../../models/UsuarioModel'
 
-const endpointCadastro = (req : NextApiRequest, res : NextApiResponse<respostaPadraoMsg>) => {
+const endpointCadastro = async (req : NextApiRequest, res : NextApiResponse<respostaPadraoMsg>) => {
+    
     //solicitando um requisição do tipo POST
     if (req.method === 'POST'){
         const usuario = req.body as CadastroRequisicao;
@@ -17,6 +19,10 @@ const endpointCadastro = (req : NextApiRequest, res : NextApiResponse<respostaPa
         }
         return res.status(200).json({msg : 'Dados Corretos'}); //Se tudo correr bem ns validações.
     }
+    //salvar no banco de dados
+    await UsuarioModel.create(usuario);
+    return res.status(200).json({msg : 'Usuario criado com sucesso '})
+
     // se  requisição não for pelo metodo  POST, apresentará o erro abaixo
     return res.status(405).json({erro: 'Metodo informado nao e valido'});
 }
