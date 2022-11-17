@@ -3,6 +3,7 @@ import type { respostaPadraoMsg } from "../../types/respostaPadraoMsg";
 import type { CadastroRequisicao } from "../../types/CadastroRequisicao";
 
 const endpointCadastro = (req : NextApiRequest, res : NextApiResponse<respostaPadraoMsg>) => {
+    //solicitando um requisição do tipo POST
     if (req.method === 'POST'){
         const usuario = req.body as CadastroRequisicao;
         if(!usuario.nome || usuario.nome.length < 2){
