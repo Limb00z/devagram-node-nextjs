@@ -16,5 +16,6 @@ const endpointCadastro = (req : NextApiRequest, res : NextApiResponse<respostaPa
 
         }
     }
+    // se  requisição não for pelo metodo  POST, apresentará o erro abaixo
     return res.status(405).json({erro: 'Metodo informado nao e valido'});
 }
