@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { respostaPadraoMsg } from "../../types/respostaPadraoMsg";
 import type { CadastroRequisicao } from "../../types/CadastroRequisicao";
 import {UsuarioModel} from  '../../models/UsuarioModel'
+import md5 from 'md5';
 
 const endpointCadastro = async (req : NextApiRequest, res : NextApiResponse<respostaPadraoMsg>) => {
     
@@ -19,7 +20,12 @@ const endpointCadastro = async (req : NextApiRequest, res : NextApiResponse<resp
         }
          //Se tudo correr bem nas validações.
          //salvar no banco de dados
-         await UsuarioModel.create(usuario);
+         const usuarioASerSalvo = {
+            nome : usuario.nome,
+            email : usuario.email,
+            senha : md5(usuario.senha)
+         }
+         await UsuarioModel.create(usuarioASerSalvo);
          return res.status(200).json({msg : 'Usuario criado com sucesso '})
     }
 
