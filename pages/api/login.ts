@@ -10,9 +10,11 @@ const endpointLogin = async (
 ) => {
     if(req.method === 'POST'){
         const{login,senha} = req.body;
-
+        
+        //Buscar usuario no BD
         const usuariosEncontrados = await UsuarioModel.find({email : login, senha : md5(senha)});
 
+        //validação... se achar ou não
         if(usuariosEncontrados && usuariosEncontrados.length > 0){
             const usuarioEncontrado = usuariosEncontrados[0];
             return res.status(200).json({msg : `Usuario ${usuarioEncontrado.nome} encontrado com sucesso.`});
