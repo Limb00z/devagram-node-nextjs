@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { respostaPadraoMsg } from "../../types/respostaPadraoMsg";
 import type { CadastroRequisicao } from "../../types/CadastroRequisicao";
 import {UsuarioModel} from  '../../models/UsuarioModel'
+import {conectarMongoDb} from '../../middlewares/conectaMongoDB';
 import md5 from 'md5';
 
 const endpointCadastro = async (req : NextApiRequest, res : NextApiResponse<respostaPadraoMsg>) => {
@@ -18,6 +19,13 @@ const endpointCadastro = async (req : NextApiRequest, res : NextApiResponse<resp
         if(!usuario.senha || usuario.senha.length < 8 ) {
             return res.status(400).json({erro: 'Senha invalida'});  //Validação de senha (fraca) {será usado regex}
         }
+
+        // validação se já existe usuario com o mesmo email
+        const usuarioComMesmoEmail = await UsuarioModel.find({email : usuario.email});
+        if(usuarioComMesmoEmail && usuarioComMesmoEmail.length > 0 ){
+            return res.status(400).json({erro: 'Ja existe uma conta com este email'});
+        }
+
          //Se tudo correr bem nas validações.
          //salvar no banco de dados
          const usuarioASerSalvo = {
@@ -33,4 +41,4 @@ const endpointCadastro = async (req : NextApiRequest, res : NextApiResponse<resp
     return res.status(405).json({erro: 'Metodo informado nao e valido'});
 }
 
-export default endpointCadastro
+export default conectarMongoDb(endpointCadastro);
